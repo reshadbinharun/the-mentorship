@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 
 app.listen(process.env.PORT || 8080);
 */
-
+const { Client } = require('pg');
 var express = require('express'); 
 var app = express();
 app.use(express.static(__dirname + '/public'));
@@ -28,6 +28,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
 });
+
 /*
 var pg = require('pg');
 
@@ -44,22 +45,65 @@ app.get('/db', function (request, response) {
 });
 */
 
-const { Client } = require('pg');
+app.get('/getHit', function (req, res){
+	const client = new Client({
+  	connectionString: process.env.DATABASE_URL,
+  	ssl: true,
+	});
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+	client.connect();
 
-client.connect();
+	client.query('SELECT name, time_commit FROM mentors WHERE language = "French";', (err, res) => {
+  		if (err) throw err;
+  		for (let row of res.rows) {
+    res.send(JSON.stringify(row));
+  	}
+  	client.end();
+	});
+}
 
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-  if (err) throw err;
-  for (let row of res.rows) {
-    console.log(JSON.stringify(row));
-  }
-  client.end();
-});
+app.post('/postStudent', function (req, res){
+	var name = req.name;
+	var language = req.language;
+	var time_commit = req.time_commit;
+	var skill = req.skill;
+
+	const client = new Client({
+  	connectionString: process.env.DATABASE_URL,
+  	ssl: true,
+	});
+
+	client.connect();
+
+	client.query('insert into mentors (name, language, time_commit, skill) values ('+ name +', '+language+', '+time_commit+', '+skill+');', (err, res) => {
+  		if (err) throw err;
+  		for (let row of res.rows) {
+    res.send(JSON.stringify(row));
+  	}
+  	client.end();
+	});
+}
+
+app.post('/postMentor', function (req, res){
+	var name = req.name;
+	var language = req.language;
+	var time_commit = req.time_commit;
+	var skill = req.skill;
+	const client = new Client({
+  	connectionString: process.env.DATABASE_URL,
+  	ssl: true,
+	});
+
+	client.connect();
+
+	client.query('insert into mentors (name, language, time_commit, skill) values ('+ name +', '+language+', '+time_commit+', '+skill+');', (err, res) => {
+  		if (err) throw err;
+  		for (let row of res.rows) {
+    res.send(JSON.stringify(row));
+  	}
+  	client.end();
+	});
+}
 
 
 
