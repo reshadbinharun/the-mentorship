@@ -28,7 +28,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
 });
-
+/*
 var pg = require('pg');
 
 app.get('/db', function (request, response) {
@@ -41,6 +41,24 @@ app.get('/db', function (request, response) {
        { response.render('pages/db', {results: result.rows} ); }
     });
   });
+});
+*/
+
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
 });
 
 
