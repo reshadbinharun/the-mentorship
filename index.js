@@ -60,7 +60,7 @@ app.get('/getHit', function (req, res){
   	}
   	client.end();
 	});
-}
+});
 
 app.post('/postStudent', function (req, res){
 	var name = req.name;
@@ -82,7 +82,7 @@ app.post('/postStudent', function (req, res){
   	}
   	client.end();
 	});
-}
+});
 
 app.post('/postMentor', function (req, res){
 	var name = req.name;
@@ -103,7 +103,7 @@ app.post('/postMentor', function (req, res){
   	}
   	client.end();
 	});
-}
+});
 
 
 
