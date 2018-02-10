@@ -8,12 +8,18 @@
 	</head>
 	<body>
 		<img id = "logo" src = "logo.png" alt = "logo"/>
+		<p> Would you like to teach or learn today? </p>
  		<button id = "b1" onclick="window.location.href='/student.html'">Student</button>
  		<button id = "b2" onclick="window.location.href='/mentors.html'">Mentor</button>
  		<form method="post" action="/postMentor" enctype="multipart/form-data">
+ 			<p>Mentors provide your details: </p>
+ 			<p>Name:</p>
 		  <input type="text" name="name">
+		  	<p>Language:</p>
 		  <input type="text" name="language">
+		   <p>Number of hours you can commit: </p>
 		  <input type="integer" name="time_commit">
+		  <p> Skill: </p>
 		  <input type="text" name="skill">
 		  <button type="submit">Upload</button>
 		</form>
