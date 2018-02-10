@@ -28,7 +28,7 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
 });
-
+/*
 var pg = require('pg');
 
 app.get('/db', function (request, response) {
@@ -42,6 +42,7 @@ app.get('/db', function (request, response) {
     });
   });
 });
+*/
 
 
 app.listen(process.env.PORT || 3000);
