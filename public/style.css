@@ -1,14 +1,19 @@
 <style>
-#title{
-	text-align: center;
-}
 
 #logo{
-
+	align-content: center;
 }
 
 #back{
 
+}
+
+#student{
+	vertical-align: left;
+}
+
+#stud1 {
+	vertical-align: left;
 }
 
 </style>
