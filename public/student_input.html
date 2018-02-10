@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> Mentor Sign up </title>
+		<title> Student Input</title>
 		<meta charset = "utf-8" />
 		<meta name = "viewport" content = "initial-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" href="style.css" type="text/css" />
 	</head>
 	<body>
 		<img id = "logo" src = "logo.png" alt = "logo"/>
-		<form method="post" action="/postMentor" >
- 			<p>Mentors provide your details: </p>
- 			<p>Name:</p>
-		  <input type="text" name="name">
-		  	<p>Language:</p>
+		<form method="post" action="/getHit" >
+ 			<p>What are you looking? </p>
+ 			<p>Skill?</p>
+		  <input type="text" name="skill"?>
+		  	<p>What Language do you speak</p>
 		  <input type="text" name="language">
-		   <p>Number of hours you can commit: </p>
+		   <p>How many hours can you commit? </p>
 		  <input type="integer" name="time_commit">
-		  <p> Skill: </p>
-		  <input type="text" name="skill">
 		  <input type="submit">Upload</input>
 		</form>
 	</body>

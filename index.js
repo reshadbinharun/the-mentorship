@@ -24,10 +24,19 @@ const { Client } = require('pg');
 var express = require('express'); 
 var app = express();
 app.use(express.static(__dirname + '/public'));
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extend : true}));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
 });
+
+	DATABASE_URL = 'postgres://xmjmejyqovmyxr:f83166d3ca07aa04da2b3b1e1b92cf7fd8a769a54d6ac89d2171ff5cdd5113fd@ec2-54-225-199-107.compute-1.amazonaws.com:5432/d9gfqjbk55m9bs?ssl=true';
+	const client = new Client({
+  	connectionString: DATABASE_URL,
+  	ssl: true,
+	});
+	client.connect();
 
 /*
 var pg = require('pg');
@@ -45,20 +54,20 @@ app.get('/db', function (request, response) {
 });
 */
 
-app.get('/getHit', function (req, res){
-	const client = new Client({
-  	connectionString: process.env.DATABASE_URL,
-  	ssl: true,
-	});
+app.post('/getHit', function (req, res){
+	var language = req.language;
+	var time_commit = req.time_commit;
+	var skill = req.skill;
 
-	client.connect();
+	//client.connect();
 
-	client.query('SELECT name, time_commit FROM mentors WHERE language = "French";', (err, res) => {
+	var query_string = 'SELECT name, time_commit, skill, language FROM mentors WHERE language = \''+language+', skill = \''+skill+';';
+	client.query(query_string, (err, res) => {
   		if (err) throw err;
   		for (let row of res.rows) {
     res.send(JSON.stringify(row));
   	}
-  	client.end();
+  	//client.end();
 	});
 });
 
@@ -68,43 +77,39 @@ app.post('/postStudent', function (req, res){
 	var time_commit = req.time_commit;
 	var skill = req.skill;
 
-	const client = new Client({
-  	connectionString: process.env.DATABASE_URL,
-  	ssl: true,
-	});
-
-	client.connect();
-
+	
 	client.query('insert into mentors (name, language, time_commit, skill) values ('+ name +', '+language+', '+time_commit+', '+skill+');', (err, res) => {
   		if (err) throw err;
   		for (let row of res.rows) {
     res.send(JSON.stringify(row));
   	}
-  	client.end();
+  	//client.end();
 	});
 });
 
 app.post('/postMentor', function (req, res){
 	console.log("started postMentor");
-	var name = req.name;
-	var language = req.language;
-	var time_commit = req.time_commit;
-	var skill = req.skill;
-	console.log(req);
-	const client = new Client({
-  	connectionString: process.env.DATABASE_URL,
-  	ssl: true,
-	});
+	var name = req.body.name;
+	var language = req.body.language;
+	var time_commit = req.body.time_commit;
+	var skill = req.body.skill;
+	console.log(name);
+	
 
-	client.connect();
-
-	client.query('insert into mentors (name, language, time_commit, skill) values ('+ name +', '+language+', '+time_commit+', '+skill+');', (err, res) => {
+	
+	//client.connect();
+	var query_string = 'insert into mentors (name, language, time_commit, skill) values (\''+ name +'\', \''+language+'\', \''+time_commit+'\', \''+skill+'\');';
+	console.log(query_string);
+	client.query(query_string, (err, res) => {
   		if (err) throw err;
   		for (let row of res.rows) {
     res.send(JSON.stringify(row));
   	}
-  	client.end();
-	});
+  	//client.end();
+	
+});
+	console.log(process.env.DATABASE_URL);
+	res.end();
 });
 
 
