@@ -85,10 +85,12 @@ app.post('/postStudent', function (req, res){
 });
 
 app.post('/postMentor', function (req, res){
+	console.log("started postMentor");
 	var name = req.name;
 	var language = req.language;
 	var time_commit = req.time_commit;
 	var skill = req.skill;
+	console.log(req);
 	const client = new Client({
   	connectionString: process.env.DATABASE_URL,
   	ssl: true,
