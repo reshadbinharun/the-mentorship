@@ -9,5 +9,18 @@
 	<body>
 		<img id = "logo" src = "logo.png" alt = "logo"/>
  		<button id = "b1" onclick="window.location.href='/student.html'">Student</button>
+ 		<form name="myForm" onsubmit="return validateForm()" method="post">
+		Name: <input type="text" name="fname">
+		<input type="submit" value="Submit">
+		</form>
 	</body>
 </html>
+<script>
+	function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+}
+</script>
