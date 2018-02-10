@@ -25,7 +25,7 @@ var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/public'));
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extend : true}));
+app.use(bodyParser.urlencoded({extended : true}));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname + '/public/index.html'));
@@ -55,17 +55,19 @@ app.get('/db', function (request, response) {
 */
 
 app.post('/getHit', function (req, res){
-	var language = req.language;
-	var time_commit = req.time_commit;
-	var skill = req.skill;
-
+	var language = req.body.language;
+	var time_commit = req.body.time_commit;
+	var skill = req.body.skill;
 	//client.connect();
 
-	var query_string = 'SELECT name, time_commit, skill, language FROM mentors WHERE language = \''+language+', skill = \''+skill+';';
-	client.query(query_string, (err, res) => {
+	//var query_string = 'SELECT name, time_commit, skill, language FROM mentors WHERE language = \''+language+', skill = \''+skill+';';
+	var query_string = 'SELECT * FROM mentors WHERE language = \''+language+'\' and skill = \''+skill+'\' and time_commit >= \''+time_commit+'\';';
+	console.log(query_string);
+	client.query(query_string, (err, res2) => {
   		if (err) throw err;
-  		for (let row of res.rows) {
+  		for (let row of res2.rows) {
     res.send(JSON.stringify(row));
+    console.log(JSON.stringify(row));
   	}
   	//client.end();
 	});
@@ -100,16 +102,14 @@ app.post('/postMentor', function (req, res){
 	//client.connect();
 	var query_string = 'insert into mentors (name, language, time_commit, skill) values (\''+ name +'\', \''+language+'\', \''+time_commit+'\', \''+skill+'\');';
 	console.log(query_string);
-	client.query(query_string, (err, res) => {
+	client.query(query_string, (err, res2) => {
   		if (err) throw err;
-  		for (let row of res.rows) {
-    res.send(JSON.stringify(row));
-  	}
+  		res.redirect('/index.html');
+  		res.end();
   	//client.end();
 	
 });
 	console.log(process.env.DATABASE_URL);
-	res.end();
 });
 
 
